@@ -72,4 +72,24 @@ public class UserController : ControllerBase
         }
     }
 
+    [HttpPut]
+    public async Task<ActionResult> UpdateUser([FromBody] User user)
+    {
+        try
+        {
+            if (user == null)
+            {
+                return BadRequest();
+            }
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return Ok(user);
+        }
+        catch (System.Exception)
+        {
+
+            throw;
+        }
+    }
+
 }
