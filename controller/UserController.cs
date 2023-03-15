@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using TodoContextDB.Data;
 
-[Route("api/[controller]")]
+[Route("api/[action]")]
 [ApiController]
 public class UserController : ControllerBase
 {
@@ -52,7 +52,7 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpGet("all")]
+    [HttpGet]
 
     public async Task<ActionResult> GetAllUsers()
     {
@@ -92,4 +92,24 @@ public class UserController : ControllerBase
         }
     }
 
+    [HttpDelete]
+    public async Task<ActionResult> DeleteUser([FromQuery] int id)
+    {
+        try
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return Ok(user);
+        }
+        catch (System.Exception)
+        {
+
+            throw;
+        }
+    }
 }
