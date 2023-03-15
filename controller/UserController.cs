@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using TodoContextDB.Data;
 
@@ -30,5 +31,45 @@ public class UserController : ControllerBase
             throw;
         }
     }
-}
 
+    [HttpGet]
+    public async Task<ActionResult> GetUserId([FromQuery] int id)
+    {
+
+        try
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
+        catch (System.Exception)
+        {
+
+            throw;
+        }
+    }
+
+    [HttpGet("all")]
+
+    public async Task<ActionResult> GetAllUsers()
+    {
+        try
+        {
+            var users = await _context.Users.ToListAsync();
+            if (users == null)
+            {
+                return NotFound();
+            }
+            return Ok(users);
+        }
+        catch (System.Exception)
+        {
+
+            throw;
+        }
+    }
+
+}
